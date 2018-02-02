@@ -33,7 +33,7 @@ C     (default values)
       expconst = 1d0    ! exp constant
       lchecks = .true.  ! print potential at each step?  This is slow.
       lprint = .false.  ! check projectors at each step?
-      lactive = .false.  ! check projectors at each step?
+      lactive = .false.  ! MO CAP tuned on?
       
 
 C     XXX FIX LOGICALS:  read in true/false

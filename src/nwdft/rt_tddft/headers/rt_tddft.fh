@@ -361,6 +361,13 @@ C     (MO complex absorbing potential stuff)
          double precision :: mocap_maxval
          double precision :: mocap_prefac
          double precision :: mocap_expconst
+
+C     (Spatial complex absorbing potential stuff)
+         logical          :: cap_active
+         integer          :: cap_nq(3)
+         double precision :: cap_maxval
+         double precision :: cap_qmin(3)
+         double precision :: cap_qmax(3)
          
       end type rt_params_t
 c $Id$

@@ -222,6 +222,9 @@ C
       if (params%mocap_active) then
          call rt_tddft_print_notice (
      $        "MO CAP active: Disabled initial MO Fock check")
+      elseif (params%cap_active) then
+         call rt_tddft_print_notice (
+     $        "CAP active: Disabled initial MO Fock check")
       else
 
          if (.not. mat_is_purereal (g_zfock_mo(1), params%tol_zero))

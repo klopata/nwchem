@@ -196,6 +196,13 @@ C
          elseif (inp_compare(.false.,test,'mocap')) then
             call rt_tddft_input_mocap (rtdb)
             
+
+C
+C     Spatial complex absopbing potential (CAP) sub-block
+C
+         elseif (inp_compare(.false.,test,'cap')) then
+            call rt_tddft_input_cap (rtdb)
+
             
 C     
 C     tmin

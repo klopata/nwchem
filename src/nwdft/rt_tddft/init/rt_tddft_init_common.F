@@ -316,5 +316,13 @@ C     xxx check ns_ao vs nbf_ao
      $     call rt_tddft_print_warning ("Static calculation--"//
      $     "Fock matrix will be frozen")
 
+
+C
+C     Compute spatial CAP (if turned on)
+C
+C      if (params%cap_lactive)
+C     $     call rt_tddft_build_cap (params) XXX TODO
+      
+
       end subroutine rt_tddft_init_common
 c $Id$
