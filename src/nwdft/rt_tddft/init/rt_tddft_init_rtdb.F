@@ -212,7 +212,7 @@ C
 
 
 C     
-C     Molecular orbital CAP
+C     MO CAP
 C
       if (.not.rtdb_get(params%rtdb, "rt_tddft:mocap_active",
      $     mt_log, 1, params%mocap_active)) call errquit (pname//
@@ -252,23 +252,9 @@ C
      $     mt_log, 1, params%cap_active)) call errquit (pname//
      $     "failed to read cap_active from rtdb", 0, RTDB_ERR)
 
-      if (params%cap_active) then
-         if (.not. rtdb_get (params%rtdb, "rt_tddft:cap_maxval",
-     $        mt_dbl, 1, params%cap_maxval)) call errquit (pname//
-     $        "failed to read cap_maxval from rtdb", 0, RTDB_ERR)
+C     if (params%cap_active) then
+C     XXX LOAD PARAMS
 
-         if (.not.rtdb_get (params%rtdb, "rt_tddft:cap_qmin",
-     $        mt_dbl, 3, params%cap_qmin))
-     $        call errquit(pname//'Write failed to rtdb',0,RTDB_ERR)
-
-         if (.not.rtdb_get (params%rtdb, "rt_tddft:cap_qmax",
-     $        mt_dbl, 3, params%cap_qmax))
-     $        call errquit(pname//'Write failed to rtdb',0,RTDB_ERR)
-
-         if (.not.rtdb_get (params%rtdb, "rt_tddft:cap_nq",
-     $        mt_int, 3, params%cap_nq))
-     $        call errquit(pname//'Write failed to rtdb',0,RTDB_ERR)
-      endif
-
+      
       end subroutine
 c $Id$

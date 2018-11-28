@@ -46,7 +46,7 @@ C> Advanced Scientific Computing.
 C>
 C> Licensed under the Educational Community License, Version 2.0 (the "License"); you may
 C> not use this file except in compliance with the License. You may obtain a copy of the
-C> License at <a href="http://www.osedu.org/licenses/ECL-2.0">http://www.osedu.org/licenses/ECL-2.0</a>.
+C> License at <a href="https://opensource.org/licenses/ECL-2.0">https://opensource.org/licenses/ECL-2.0</a>.
 C>
 C> Unless required by applicable law or agreed to in writing, software distributed under the
 C> License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -64,7 +64,7 @@ C>   <I>Computer Physics Communications</I>, <b>181</b>, 1477–1489, DOI: <a hr
 C>
 C> provides details on the codes capabilities.
 C>
-C> Copyright (c) 1994-2015 Pacific Northwest National Laboratory, Battelle Memorial Institute
+C> Copyright (c) 1994-2018 Pacific Northwest National Laboratory, Battelle Memorial Institute
 C>
 C> Environmental Molecular Sciences Laboratory (EMSL)<br>
 C> Pacific Northwest National Laboratory<br>
@@ -161,7 +161,7 @@ C
 !     label is not accidentally reused, since that will not be caught by
 !     testing that does not enable OpenMP.
 !
- 99   format(2x,'NWChem w/ OpenMP: maximum threads = ',i2)
+ 99   format(2x,'NWChem w/ OpenMP: maximum threads = ',i4)
 #if defined(USE_OPENMP)
       !$omp parallel
       !$omp master
@@ -208,7 +208,7 @@ c
 c     Trap SIGFPE after GA to override handler
 c
 *****      call ieeetrap()
-#if defined(DECOSF) || defined(LINUXALPHA)
+#if defined(LINUXALPHA)
       call dec_fpe  ! To avoid underflow problems on Alpha in Texas
 #endif
 #ifdef CRAY_T3D
@@ -461,7 +461,7 @@ c
       call util_print_centered(LuOut,'Richland, WA 99352',
      $     40, .false.)
       write(LuOut,*)
-      call util_print_centered(LuOut,'Copyright (c) 1994-2015',
+      call util_print_centered(LuOut,'Copyright (c) 1994-2018',
      $     40, .false.)
       call util_print_centered(LuOut,
      $     'Pacific Northwest National Laboratory',

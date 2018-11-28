@@ -6,8 +6,9 @@ rt_tddft_input_excite.o \
 rt_tddft_input_tolerances.o \
 rt_tddft_input_visualization.o \
 rt_tddft_input_mocap.o \
-rt_tddft_input_cap.o \
+rt_tddft_input_spatialcap.o \
 rt_tddft_input.o
+
 
 OBJ_OPTIMIZE = 
 

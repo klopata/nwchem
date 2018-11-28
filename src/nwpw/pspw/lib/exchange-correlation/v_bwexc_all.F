@@ -19,24 +19,20 @@
       
 #include "bafdecls.fh"
 #include "errquit.fh"
-#include "nwxc.fh"
+#include "nwpwxc.fh"
 #include "util.fh"
 
       integer tmp1(2)
       logical use_lda, use_gga, use_mgga
       
 *     **** lda's ****
-      if (util_module_avail("nwxc")) then
-         use_lda  = (.not.nwxc_is_on().and.gga.eq.0).or.
-     +              (nwxc_is_on().and.nwxc_is_lda())
-         use_gga  = (.not.nwxc_is_on().and.(gga.ge.10).and.(gga.lt.100))
-     +              .or.(nwxc_is_on().and.nwxc_is_gga())
-         use_mgga = nwxc_is_mgga()
-      else
-         use_lda  = gga.eq.0
-         use_gga  = (gga.ge.10).and.(gga.lt.100)
-         use_mgga = .false.
-      endif
+      use_lda  = (.not.nwpwxc_is_on().and.gga.eq.0).or.
+     +           (nwpwxc_is_on().and.nwpwxc_is_lda())
+      use_gga  = (.not.nwpwxc_is_on().and.(gga.ge.10)
+     >             .and.(gga.lt.100))
+     +           .or.(nwpwxc_is_on().and.nwpwxc_is_gga())
+      use_mgga = nwpwxc_is_mgga()
+     
       if (use_lda) then
          if (.not.BA_push_get(mt_dbl,(ispin*n2ft3d),'tmp1',
      >                        tmp1(2),tmp1(1)))
@@ -92,21 +88,18 @@
 
 #include "bafdecls.fh"
 #include "errquit.fh"
-#include "nwxc.fh"
+#include "nwpwxc.fh"
 #include "util.fh"
 
-      logical use_lda, use_gga
+      logical use_lda, use_gga, use_mgga
 
-      if (util_module_avail("nwxc")) then
-        use_lda = (.not.nwxc_is_on().and.gga.eq.0).or.
-     +            (nwxc_is_on().and.nwxc_is_lda())
-        use_gga = (.not.nwxc_is_on().and.(gga.ge.10).and.(gga.lt.100))
-     +            .or.(nwxc_is_on().and.nwxc_is_gga())
-      else
-        use_lda = gga.eq.0
-        use_gga = (gga.ge.10).and.(gga.lt.100)
-      endif
-
+    
+       use_lda = (.not.nwpwxc_is_on().and.gga.eq.0).or.
+     +           (nwpwxc_is_on().and.nwpwxc_is_lda())
+       use_gga = (.not.nwpwxc_is_on().and.(gga.ge.10).and.(gga.lt.100))
+     +           .or.(nwpwxc_is_on().and.nwpwxc_is_gga())
+       use_mgga = nwpwxc_is_mgga()
+     
 *     **** lda's ****
       if (use_lda) then
 
@@ -116,6 +109,11 @@
       else if (use_gga) then
 
          call v_bwexc(gga,n2ft3d,ispin,dn,1.0d0,1.0d0,xcp,xce)
+
+
+*     **** meta-gga's ****
+      else if (use_mgga) then
+         call v_mexc(gga,n2ft3d,ispin,dn,1.0d0,1.0d0,xcp,xce)
       
 *     **** hybrid gga's ****
       else if (gga.eq.110) then
@@ -143,19 +141,17 @@
       integer luout,gga
 
 #include "errquit.fh"
-#include "nwxc.fh"
+#include "nwpwxc.fh"
 #include "util.fh"
 
-      logical  control_has_disp
-      external control_has_disp
+      logical  control_has_disp,control_has_vdw,control_is_vdw2
+      external control_has_disp,control_has_vdw,control_is_vdw2
       character*80 control_options_disp
       external     control_options_disp
 
-      if (util_module_avail("nwxc")) then
-         if (nwxc_is_on()) then
-            call nwxc_print_nwpw()
-            return
-         endif
+      if (nwpwxc_is_on()) then
+         call nwpwxc_print_nwpw()
+         return
       endif
       IF (gga.eq.-1) THEN
          write(luout,1131) 'off'
@@ -173,6 +169,12 @@
       ELSE IF (gga.eq.13) THEN
          write(luout,1131)
      >   'PBEsol (White and Bird) parameterization'
+      ELSE IF (gga.eq.16) THEN
+         write(luout,1131)
+     >   'BEEF (White and Bird) parameterization'
+      ELSE IF (gga.eq.17) THEN
+         write(luout,1131)
+     >   'XBEEF-CPBE (White and Bird) parameterization'
 
       ELSE IF (gga.eq.110) THEN
          write(luout,1131)
@@ -199,6 +201,15 @@
          write(luout,1131) 'unknown parameterization'
          call errquit('bad exchange_correlation',0, INPUT_ERR)
       END IF
+
+      if (control_has_vdw()) then
+         if (control_is_vdw2()) then
+            write(luout,1132) "vdw2 Langreth functional"
+         else
+            write(luout,1132) "vdw Langreth functional"
+         end if
+      end if
+
       if (control_has_disp()) then
         if (index(control_options_disp(),'-old').ne.0) 
      >    write(luout,1132) 'Grimme2'
